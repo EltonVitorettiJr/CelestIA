@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="logotipo.png" type="image/png">
+
+
+  <title>CelestIA</title>
+</head>
+<body>
+  <div class="container">
+    <div class="topo">
+      <img src="logotipo.png" alt="Ilustração de assistente virtual" class="imagem-destaque">
+    </div>
+
+    <!-- Caixa do chat -->
+    <div class="box-questions">
+      <div class="header">O que posso fazer por você hoje?</div>
+      <p id="status"></p>
+      <div id="history"></div>
+      <div class="footer">
+      <input type="text" id="message-input" placeholder="Escreva aqui..." autocomplete="off">
+        <button class="btn-submit" id="btn-submit" onclick="sendMessage()">Enviar</button>
+      </div>
+    </div>
+  </div>
+  <script src="main.js"></script>
+</body>
+</html>

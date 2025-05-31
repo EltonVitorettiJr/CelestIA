@@ -1,0 +1,18 @@
+{
+  "name": "chatgpt-with-javascript-main",
+  "version": "1.0.0",
+  "description": "→ Integration **ChatGPT + HTML + CSS + JavaScript** ![Captura de Tela 2023-03-29 às 19 32 04](https://user-images.githubusercontent.com/18150462/228682612-0cefbcd8-8277-412a-a12d-0c5dd62bead7.png)",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.9.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
+  }
+}
