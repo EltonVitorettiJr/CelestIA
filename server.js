@@ -22,7 +22,7 @@ app.post("/proxy-chat", async (req, res) => {
       messages: [
         {
           role: "system",
-          content: "Você é um assistente virtual que responde de forma clara, objetiva e precisa. Sempre responda diretamente à dúvida, com explicações fáceis de entender. Evite enrolação ou respostas genéricas."
+          content: "Você é um assistente virtual que responde de forma clara, objetiva e natural. Suas respostas devem ser adequadas para conversação e síntese de voz, com frases curtas e estrutura simples. Evite caracteres especiais, markdown ou formatação complexa."
         },
         {
           role: "user",
