@@ -42,11 +42,10 @@ function sendMessage() {
     });
 }
 
-// ✅ ESCUTAR TECLA ENTER PARA ENVIAR
 document.getElementById('message-input').addEventListener('keydown', function (event) {
     const btn = document.getElementById('btn-submit');
     if (event.key === 'Enter' && !btn.disabled) {
-        event.preventDefault(); // evitar quebra de linha
+        event.preventDefault();
         sendMessage();
     }
 });
