@@ -67,3 +67,4 @@ function showHistory(userMessage, resposta) {
 
     historyDiv.scrollTop = historyDiv.scrollHeight;
 }
+
