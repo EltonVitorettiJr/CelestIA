@@ -39,10 +39,16 @@
         <input type="text" id="message-input" placeholder="Escreva aqui..." autocomplete="off" />
         <button class="btn-submit" id="btn-submit" onclick="sendMessage()">Enviar</button>
       </div>
-      <div class="velocidade-container">
-        <label>Velocidade: </label>
-        <input type="range" min="0.5" max="1.5" step="0.1" value="0.9" 
-              id="velocidade-fala" onchange="velocidadeFala = parseFloat(this.value)">
+      <div class="controles-audio">
+        <div class="velocidade-container">
+          <label>Velocidade: </label>
+          <input type="range" min="0.5" max="1.5" step="0.1" value="0.9" id="velocidade-fala" onchange="velocidadeFala = parseFloat(this.value)">
+        </div>
+      
+        <div class="volume-container">
+          <label>Volume: </label>
+          <input type="range" min="0" max="1" step="0.1" value="1" id="volume-fala" onchange="volumeFala = parseFloat(this.value)">
+        </div>
       </div>
     </div>
   </div>
@@ -51,6 +57,7 @@
     let utterance;
     let falando = false;
     let velocidadeFala = 0.9; // 🔹 Adicione esta linha (variável de controle)
+    let volumeFala = 1; // 🔹 Adicione esta linha (volume padrão)
 
     // 🔹 Função auxiliar para carregar vozes
     function carregarVozes() {
@@ -67,12 +74,15 @@
     }
 
     // 🔹 Função principal de fala (ATUALIZADA)
-    async function toggleFala(texto) {
-      if (falando) {
-        speechSynthesis.cancel();
-        falando = false;
-        atualizarIcone(false);
-        return;
+    async function toggleFala(texto, botao) {
+      // Obter estado específico deste botão
+      const estaFalando = botao.classList.contains('falando');
+      
+      if (estaFalando) {
+          speechSynthesis.cancel();
+          botao.classList.remove('falando');
+          atualizarIcone(botao, false);
+          return;
       }
 
       // Verifica se a API está disponível
@@ -89,7 +99,7 @@
         // Configurações melhoradas
         utterance.rate = velocidadeFala; // Usa a variável de controle
         utterance.pitch = 0.8; // Tom mais natural
-        utterance.volume = 1;
+        utterance.volume = volumeFala;
 
         // Seleção de voz melhorada
         const vozPreferida = vozes.find(v => 
@@ -102,31 +112,28 @@
 
         // Eventos atualizados
         utterance.onstart = () => {
-          falando = true;
-          atualizarIcone(true);
-        };
+                botao.classList.add('falando');
+                atualizarIcone(botao, true);
+            };
 
-        utterance.onend = utterance.onerror = () => {
-          falando = false;
-          atualizarIcone(false);
-        };
+            utterance.onend = utterance.onerror = () => {
+                botao.classList.remove('falando');
+                atualizarIcone(botao, false);
+            };
 
-        speechSynthesis.speak(utterance);
+            speechSynthesis.speak(utterance);
       } catch (error) {
-        console.error("Erro na síntese de voz:", error);
-        alert("Erro ao reproduzir áudio");
+          console.error("Erro na síntese de voz:", error);
+          alert("Erro ao reproduzir áudio");
       }
     }
 
-    function atualizarIcone(estaFalando) {
-      const icone = document.getElementById('icone-audio-ia');
-      if (!icone) return; // Se não existir, evita erro
-
-      if (estaFalando) {
-        icone.textContent = '🔈';  // Ícone falando
-      } else {
-        icone.textContent = '🔇';  // Ícone mudo
-      }
+    function atualizarIcone(botao, estaFalando) {
+        if (estaFalando) {
+            botao.textContent = '🔈';  // Ícone falando
+        } else {
+            botao.textContent = '🔇';  // Ícone mudo
+        }
     }
 
     async function sendMessage() {
@@ -168,9 +175,10 @@
         textoSpan.textContent = text;
 
         const botaoAudio = document.createElement("button");
-        botaoAudio.id = "icone-audio-ia";
+        botaoAudio.classList.add('icone-audio'); // 🔹 Use CLASSE em vez de ID
         botaoAudio.textContent = "🔇";
-        botaoAudio.onclick = () => toggleFala(textoSpan.textContent);
+        // 🔹 Passe o botão como parâmetro
+        botaoAudio.onclick = () => toggleFala(textoSpan.textContent, botaoAudio);
 
         bubble.appendChild(textoSpan);
         bubble.appendChild(botaoAudio);

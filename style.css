@@ -223,7 +223,7 @@ input::placeholder {
   border: 1px solid var(--accent);
   box-shadow: 0 0 20px var(--shadow-glow);
   width: 900px;
-  height: 700px; /* 🔥 Defina uma altura fixa aqui */
+  height: 635px; /* 🔥 Defina uma altura fixa aqui */
   border-radius: var(--border-radius);
   display: flex;
   flex-direction: column;
@@ -253,7 +253,7 @@ input::placeholder {
   padding: 8px 15px;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 20px;
-  margin: 10px auto;
+  margin: 10px;
   width: fit-content;
   backdrop-filter: blur(5px);
 }
@@ -288,4 +288,54 @@ input::placeholder {
 #icone-audio-ia:hover {
   background: rgba(118, 169, 255, 0.3);
   transform: scale(1.1);
+}
+
+.controles-audio {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+/* Estilo para ambos os controles */
+.velocidade-container, 
+.volume-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 8px 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    width: fit-content;
+    backdrop-filter: blur(5px);
+    margin: 10px;
+}
+
+/* Estilo para os botões de áudio */
+.icone-audio {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    font-size: 14px;
+    border: none;
+    color: var(--text-light);
+    margin-left: 10px;
+}
+
+.icone-audio:hover {
+    background: rgba(118, 169, 255, 0.3);
+    transform: scale(1.1);
+}
+
+/* Estilo quando está falando */
+.icone-audio.falando {
+    background: rgba(118, 169, 255, 0.5);
+    box-shadow: 0 0 10px var(--shadow-glow);
 }
