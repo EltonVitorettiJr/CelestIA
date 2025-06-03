@@ -102,13 +102,6 @@ input::placeholder {
   color: #000;
 }
 
-.controles-audio {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    margin-top: 10px;
-}
-
 .footer {
   background-color: transparent;
   border: none;
@@ -223,31 +216,6 @@ input::placeholder {
   flex-direction: column;
   align-items: center;
   margin-bottom: 2rem;
-}
-
-
-.velocidade-container, 
-.volume-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 8px 15px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 20px;
-  width: fit-content;
-  backdrop-filter: blur(5px);
-  margin: 10px;
-}
-
-.velocidade-container label {
-  font-size: 0.9rem;
-  opacity: 0.8;
-}
-
-.velocidade-container input[type="range"] {
-  width: 120px;
-  background: transparent;
 }
 
 #history {

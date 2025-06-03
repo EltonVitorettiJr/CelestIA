@@ -38,17 +38,10 @@
         <input type="text" id="message-input" placeholder="Escreva aqui..." autocomplete="off" />
         <button class="btn-submit" id="btn-submit" onclick="sendMessage()">Enviar</button>
       </div>
-      <div class="controles-audio">
-        <div class="velocidade-container">
+        <!-- <div class="velocidade-container">
           <label>Velocidade: </label>
           <input type="range" min="0.5" max="1.5" step="0.1" value="1.3" id="velocidade-fala" onchange="velocidadeFala = parseFloat(this.value)">
-        </div>
-      
-        <div class="volume-container">
-          <label>Volume: </label>
-          <input type="range" min="0" max="1" step="0.1" value="0.6" id="volume-fala" onchange="volumeFala = parseFloat(this.value)">
-        </div>
-      </div>
+        </div> -->
     </div>
   </div>
 
@@ -56,7 +49,6 @@
     let utterance;
     let falando = false;
     let velocidadeFala = 1.2;
-    let volumeFala = 0.6;
 
     function carregarVozes() {
       return new Promise((resolve) => {
@@ -94,7 +86,6 @@
         
         utterance.rate = velocidadeFala;
         utterance.pitch = 0.8;
-        utterance.volume = volumeFala;
 
         const vozPreferida = vozes.find(v => 
           v.name.includes("Google português") || 
@@ -105,19 +96,19 @@
         utterance.voice = vozPreferida || null;
 
         utterance.onstart = () => {
-                botao.classList.add('falando');
-                atualizarIcone(botao, true);
-            };
+            botao.classList.add('falando');
+            atualizarIcone(botao, true);
+        };
 
-            utterance.onend = utterance.onerror = () => {
-                botao.classList.remove('falando');
-                atualizarIcone(botao, false);
-            };
+        utterance.onend = utterance.onerror = () => {
+            botao.classList.remove('falando');
+            atualizarIcone(botao, false);
+        };
 
-            speechSynthesis.speak(utterance);
+        speechSynthesis.speak(utterance);
       } catch (error) {
-          console.error("Erro na síntese de voz:", error);
-          alert("Erro ao reproduzir áudio");
+        console.error("Erro na síntese de voz:", error);
+        alert("Erro ao reproduzir áudio");
       }
     }
 
