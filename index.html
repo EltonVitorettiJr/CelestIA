@@ -13,12 +13,41 @@
       align-items: center;
       gap: 10px;
     }
+
     #icone-audio-ia {
       cursor: pointer;
       font-size: 20px;
       background: none;
       border: none;
       outline: none;
+    }
+
+    .botoes-mensagem {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      display: flex;
+      gap: 5px;
+    }
+    
+    .botao-velocidade {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .botao-velocidade:hover {
+      background: rgba(118, 169, 255, 0.3);
+      transform: scale(1.1);
     }
   </style>
 </head>
@@ -49,6 +78,8 @@
     let utterance;
     let falando = false;
     let velocidadeFala = 1.2;
+    const velocidades = [0.8, 1.2, 1.5];
+    let indiceVelocidade = 0; // Começa com 0.8x
 
     function carregarVozes() {
       return new Promise((resolve) => {
@@ -64,14 +95,13 @@
     }
 
     async function toggleFala(texto, botao) {
-    
       const estaFalando = botao.classList.contains('falando');
       
       if (estaFalando) {
-          speechSynthesis.cancel();
-          botao.classList.remove('falando');
-          atualizarIcone(botao, false);
-          return;
+        speechSynthesis.cancel();
+        botao.classList.remove('falando');
+        botao.textContent = "🔊";
+        return;
       }
 
       if (!('speechSynthesis' in window)) {
@@ -84,7 +114,11 @@
         utterance = new SpeechSynthesisUtterance(texto);
         utterance.lang = 'pt-BR';
         
-        utterance.rate = velocidadeFala;
+        // Obter velocidade da mensagem específica
+        const mensagem = botao.closest('.box-response-message');
+        const indiceVel = parseInt(mensagem.dataset.velocidadeIndex) || 0;
+        utterance.rate = [0.8, 1.2, 1.5][indiceVel];
+        
         utterance.pitch = 0.8;
 
         const vozPreferida = vozes.find(v => 
@@ -96,19 +130,39 @@
         utterance.voice = vozPreferida || null;
 
         utterance.onstart = () => {
-            botao.classList.add('falando');
-            atualizarIcone(botao, true);
+          botao.classList.add('falando');
+          botao.textContent = '🔈';
         };
 
         utterance.onend = utterance.onerror = () => {
-            botao.classList.remove('falando');
-            atualizarIcone(botao, false);
+          botao.classList.remove('falando');
+          botao.textContent = '🔊';
         };
 
         speechSynthesis.speak(utterance);
       } catch (error) {
         console.error("Erro na síntese de voz:", error);
         alert("Erro ao reproduzir áudio");
+      }
+    }
+
+    function proximaVelocidade(botao, mensagemId) {
+      const velocidades = [0.8, 1.2, 1.5];
+      const mensagem = document.getElementById(mensagemId);
+      
+      let indice = parseInt(mensagem.dataset.velocidadeIndex) || 0;
+      indice = (indice + 1) % velocidades.length;
+      
+      mensagem.dataset.velocidadeIndex = indice;
+      botao.textContent = velocidades[indice] + 'x';
+      
+      // Atualizar velocidade se estiver falando
+      const botaoAudio = mensagem.querySelector('.icone-audio');
+      if (botaoAudio.classList.contains('falando')) {
+        speechSynthesis.cancel();
+        setTimeout(() => {
+          toggleFala(mensagem.querySelector('.texto-mensagem').textContent, botaoAudio);
+        }, 100);
       }
     }
 
@@ -146,27 +200,53 @@
 
     function appendMessage(type, text) {
       const history = document.getElementById("history");
+      const messageId = 'msg-' + Date.now();
 
       const wrapper = document.createElement("div");
       wrapper.className = type === "user" ? "box-my-message" : "box-response-message";
-
+      wrapper.id = messageId;
+      wrapper.dataset.velocidadeIndex = "0"; // Inicia com 0.8x
+      
       const bubble = document.createElement("div");
       bubble.className = type === "user" ? "my-message" : "response-message";
+      bubble.classList.add("mensagem-container");
+
+      const textoSpan = document.createElement("span");
+      textoSpan.className = "texto-mensagem";
+      textoSpan.textContent = text;
+      bubble.appendChild(textoSpan);
 
       if (type === "bot") {
-        const textoSpan = document.createElement("span");
-        textoSpan.id = "texto-ia";
-        textoSpan.textContent = text;
-
+        // Container principal para a mensagem e botões
+        const contentContainer = document.createElement("div");
+        contentContainer.className = "message-content-container";
+        
+        // Botão de áudio DENTRO do container da mensagem
         const botaoAudio = document.createElement("button");
-        botaoAudio.classList.add('icone-audio');
-        botaoAudio.textContent = "🔇";
-        botaoAudio.onclick = () => toggleFala(textoSpan.textContent, botaoAudio);
+        botaoAudio.className = "icone-audio";
+        botaoAudio.textContent = "🔊";
+        botaoAudio.onclick = () => toggleFala(text, botaoAudio);
+        
+        // Adiciona o texto e o botão de áudio
+        const textContainer = document.createElement("div");
+        textContainer.className = "texto-container";
+        textContainer.appendChild(textoSpan);
+        textContainer.appendChild(botaoAudio);
+        
+        contentContainer.appendChild(textContainer);
 
-        bubble.appendChild(textoSpan);
-        bubble.appendChild(botaoAudio);
-      } else {
-        bubble.textContent = text;
+        // Botão de velocidade FORA do container (será posicionado via CSS)
+        const botaoVelocidade = document.createElement("button");
+        botaoVelocidade.className = "botao-velocidade";
+        botaoVelocidade.textContent = "0.8x";
+        botaoVelocidade.onclick = (e) => {
+          e.stopPropagation();
+          proximaVelocidade(botaoVelocidade, messageId);
+        };
+        
+        // Adiciona ambos ao bubble
+        bubble.appendChild(contentContainer);
+        bubble.appendChild(botaoVelocidade);
       }
 
       wrapper.appendChild(bubble);

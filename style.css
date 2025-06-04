@@ -86,6 +86,23 @@ input::placeholder {
 .box-response-message {
   display: flex;
   justify-content: flex-start;
+  padding-bottom: 30px; /* Espaço para o botão */
+}
+
+.box-response-message, 
+.box-my-message {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.box-response-message {
+  padding-right: 50px;
+  transition: padding-right 0.3s ease;
+}
+
+.box-response-message:hover .botao-velocidade {
+  opacity: 1;
+  transform: translateY(-50%) translateX(30%) scale(1.1);
 }
 
 .btn-audio {
@@ -100,6 +117,39 @@ input::placeholder {
 
 .btn-audio:hover {
   color: #000;
+}
+
+.botao-velocidade {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  right: -40px;
+  top: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  padding: 0%;
+}
+
+.botao-velocidade.ativo {
+  background: rgba(118, 169, 255, 0.5);
+  box-shadow: 0 0 8px var(--shadow-glow);
+}
+
+.botoes-mensagem {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: flex;
+  gap: 5px;
 }
 
 .footer {
@@ -134,29 +184,30 @@ input::placeholder {
 }
 
 .icone-audio {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    font-size: 14px;
-    border: none;
-    color: var(--text-light);
-    margin-left: 10px;
+  border-radius: 50%;
+  min-width: 24px;
+  min-height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0%;
+  margin: 0 0 0 10px;
+  align-self: center;
 }
 
 .icone-audio:hover {
-    background: rgba(118, 169, 255, 0.3);
-    transform: scale(1.1);
+  background: rgba(118, 169, 255, 0.3);
+  transform: scale(1.1);
 }
 
 .icone-audio.falando {
-    background: rgba(118, 169, 255, 0.5);
-    box-shadow: 0 0 10px var(--shadow-glow);
+  background: rgba(118, 169, 255, 0.5);
+  box-shadow: 0 0 10px var(--shadow-glow);
 }
 
 .imagem-destaque {
@@ -167,6 +218,18 @@ input::placeholder {
   margin-top: 1rem;
   animation: flutuar 4s ease-in-out infinite;
   filter: drop-shadow(0 0 15px var(--shadow-glow));
+}
+
+.mensagem-container {
+  position: relative;
+  width: auto;
+}
+
+.message-content-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
 }
 
 .my-message {
@@ -192,7 +255,6 @@ input::placeholder {
   font-size: 1rem;
   line-height: 1.4;
   position: relative;
-  word-wrap: break-word;
   user-select: text;
   transition: box-shadow 0.3s ease;
 }
@@ -205,10 +267,22 @@ input::placeholder {
   max-width: 75%;
   text-align: left;
   box-shadow: 0 0 8px rgba(0,0,0,0.3);
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.response-message {
+  position: relative;
+  overflow: visible; /* Importante para mostrar o botão fora */
 }
 
 .response-message:hover {
   box-shadow: 0 0 20px var(--accent);
+}
+
+.texto-container {
+  flex: 1;
+  display: flex;
 }
 
 .topo {
