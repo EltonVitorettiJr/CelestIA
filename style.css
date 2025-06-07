@@ -26,7 +26,6 @@ button {
   background: rgba(118, 169, 255, 0.3);
   border: none;
   border-radius: 8px;
-  padding: 12px 25px;
   font-size: 1.1rem;
   font-weight: 600;
   color: white;
@@ -72,7 +71,7 @@ input::placeholder {
   border: 1px solid var(--accent);
   box-shadow: 0 0 20px var(--shadow-glow);
   width: 900px;
-  height: 635px;
+  height: 580px;
   border-radius: var(--border-radius);
   display: flex;
   flex-direction: column;
@@ -292,6 +291,10 @@ input::placeholder {
   margin-bottom: 2rem;
 }
 
+.microfone-icon {
+  width: 50px;
+}
+
 #history {
   max-height: 500px;
   overflow-y: auto;
@@ -342,5 +345,112 @@ input::placeholder {
   }
   50% {
     transform: translateY(-8px);
+  }
+}
+
+@media (max-width: 1024px) {
+  .box-questions {
+    width: 90%;
+    padding: 1rem;
+  }
+
+  .footer {
+    flex-direction: column;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  input {
+    width: 92%;
+  }
+
+  button {
+    padding: 10px;
+    justify-content: center;
+  }
+
+  .response-message,
+  .my-message {
+    max-width: 100%;
+    word-wrap: break-word;
+  }
+
+  .botao-velocidade {
+    right: -30px;
+  }
+
+  .message-content-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .texto-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 600px) {
+  .imagem-destaque {
+    max-width: 100px;
+  }
+
+  .header {
+    font-size: 1.2rem;
+  }
+
+  .response-message,
+  .my-message {
+    font-size: 0.95rem;
+    padding: 0.8rem;
+  }
+
+  .icone-audio {
+    margin-left: 0;
+    margin-top: 0;
+    width: 28px;
+    height: 28px;
+  }
+
+  .botao-velocidade {
+    width: 28px;
+    height: 28px;
+    font-size: 9px;
+    right: -25px;
+  }
+
+  .box-questions {
+    max-width: 900px;
+    width: 80%;
+    height: 600px;
+  }
+
+  .btn-microfone {
+    margin: 0;
+  }
+
+  .container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  input {
+    width: 90%;
+  }
+}
+
+@media (max-width: 400px) {
+  
+  input {
+    width: 88%;
+  }
+}
+
+@media (max-width: 400px) {
+  
+  input {
+    width: 86%;
   }
 }

@@ -10,7 +10,7 @@ app.use(express.json());
 const apiKey = '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';
 
 // 🔑 Chave da OpenWeatherMap (Clima)
-const weatherApiKey = 'ccd71cd4a0f5ff5f351cd422d5212988';
+const weatherApiKey = 'e9a4eb2f2a6b0b54f6b249011c79344d';
 
 // 🔹 Rota de Chat com IA
 app.post("/proxy-chat", async (req, res) => {
