@@ -1,27 +1,25 @@
-function sendMessage() {
-    const messageInput = document.getElementById('message-input');
-    const status = document.getElementById('status');
-    const btnSubmit = document.getElementById('btn-submit');
 
-    if (!messageInput.value) {
+const messageInput = document.getElementById('message-input');
+const status = document.getElementById('status');
+const btnSubmit = document.getElementById('btn-submit');
+const historyDiv = document.getElementById('history');
+
+function sendMessage() {
+    const userMessage = messageInput.value.trim();
+
+    if (!userMessage) {
         messageInput.style.border = '1px solid red';
         return;
     }
     messageInput.style.border = 'none';
 
-    status.style.display = 'block';
+    bloquearInterface();
     status.innerHTML = 'Carregando...';
-    btnSubmit.disabled = true;
-    btnSubmit.style.cursor = 'not-allowed';
-    messageInput.disabled = true;
-
-    const userMessage = messageInput.value;
+    status.style.display = 'block';
 
     fetch("http://localhost:3000/proxy-chat", {
         method: 'POST',
-        headers: {
-            "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userMessage })
     })
     .then(response => response.json())
@@ -31,28 +29,16 @@ function sendMessage() {
         showHistory(userMessage, resposta);
     })
     .catch(error => {
-        console.log(`Erro -> ${error}`);
+        console.error(`Erro -> ${error}`);
         status.innerHTML = 'Erro, tente novamente mais tarde...';
     })
     .finally(() => {
-        btnSubmit.disabled = false;
-        btnSubmit.style.cursor = 'pointer';
-        messageInput.disabled = false;
+        desbloquearInterface();
         messageInput.value = '';
     });
 }
 
-document.getElementById('message-input').addEventListener('keydown', function (event) {
-    const btn = document.getElementById('btn-submit');
-    if (event.key === 'Enter' && !btn.disabled) {
-        event.preventDefault();
-        sendMessage();
-    }
-});
-
 function showHistory(userMessage, resposta) {
-    const historyDiv = document.getElementById('history');
-
     const userMsg = document.createElement('div');
     userMsg.classList.add('user-message');
     userMsg.textContent = 'Você: ' + userMessage;
@@ -63,7 +49,24 @@ function showHistory(userMessage, resposta) {
 
     historyDiv.appendChild(userMsg);
     historyDiv.appendChild(assistantMsg);
-
     historyDiv.scrollTop = historyDiv.scrollHeight;
 }
 
+function bloquearInterface() {
+    btnSubmit.disabled = true;
+    btnSubmit.style.cursor = 'not-allowed';
+    messageInput.disabled = true;
+}
+
+function desbloquearInterface() {
+    btnSubmit.disabled = false;
+    btnSubmit.style.cursor = 'pointer';
+    messageInput.disabled = false;
+}
+
+messageInput.addEventListener('keydown', function (event) {
+    if (event.key === 'Enter' && !btnSubmit.disabled) {
+        event.preventDefault();
+        sendMessage();
+    }
+});
