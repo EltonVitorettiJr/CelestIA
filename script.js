@@ -1,6 +1,13 @@
 let utterance;
 const velocidades = [0.8, 1.2, 1.5];
 
+let conversationHistory = [
+    {
+        role: "system",
+        content: "Você é um assistente virtual que responde de forma clara, objetiva e natural. Suas respostas devem ser adequadas para conversação e síntese de voz, com frases curtas e estrutura simples. Evite caracteres especiais, markdown ou formatação complexa."
+    }
+];
+
 function carregarVozes() {
     return new Promise((resolve) => {
     const vozesDisponiveis = speechSynthesis.getVoices();
@@ -88,19 +95,23 @@ async function sendMessage() {
     appendMessage("user", message);
     input.value = "";
 
-    try {
-    const response = await fetch("http://localhost:3000/proxy-chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userMessage: message }),
-    });
+    conversationHistory.push({ role: "user", content: message });
 
-    const data = await response.json();
-    const reply = data.choices?.[0]?.message?.content || "Desculpe, não consegui responder.";
-    appendMessage("bot", reply);
+    try {
+        const response = await fetch("http://localhost:3000/proxy-chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ messages: conversationHistory })
+        });
+
+        const data = await response.json();
+        const reply = data.choices?.[0]?.message?.content || "Desculpe, não consegui responder.";
+
+        appendMessage("bot", reply);
+        conversationHistory.push({ role: "assistant", content: reply });
     } catch (error) {
-    console.error("Erro:", error);
-    appendMessage("bot", "Ocorreu um erro ao se comunicar com o assistente.");
+        console.error("Erro:", error);
+        appendMessage("bot", "Ocorreu um erro ao se comunicar com o assistente.");
     }
 }
 
@@ -181,7 +192,3 @@ document.getElementById('message-input').addEventListener('keydown', function (e
     sendMessage();
     }
 });
-
-window.speechSynthesis.onvoiceschanged = () => {
-    console.log('Vozes carregadas', speechSynthesis.getVoices());
-};

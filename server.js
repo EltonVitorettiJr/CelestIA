@@ -6,27 +6,23 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const apiKey = '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';
+const apiKey = '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';
 const weatherApiKey = 'e9a4eb2f2a6b0b54f6b249011c79344d';
 
 app.post("/proxy-chat", async (req, res) => {
-    try {
-        const { userMessage } = req.body;
+    const { messages } = req.body;
 
+    if (!Array.isArray(messages) || messages.length === 0) {
+        return res.status(400).json({ error: "Envie um array 'messages' não vazio" });
+    }
+    
+    try {
+        
         const response = await axios.post(
             "https://openrouter.ai/api/v1/chat/completions",
             {
                 model: "openai/gpt-3.5-turbo",
-                messages: [
-                    {
-                        role: "system",
-                        content: "Você é um assistente virtual que responde de forma clara, objetiva e natural. Suas respostas devem ser adequadas para conversação e síntese de voz, com frases curtas e estrutura simples. Evite caracteres especiais, markdown ou formatação complexa."
-                    },
-                    {
-                        role: "user",
-                        content: userMessage
-                    }
-                ],
+                messages: messages,
                 max_tokens: 500,
                 temperature: 0.7
             },

@@ -1,38 +1,7 @@
-
 const messageInput = document.getElementById('message-input');
 const status = document.getElementById('status');
 const btnSubmit = document.getElementById('btn-submit');
 const historyDiv = document.getElementById('history');
-
-function sendMessage() {
-    const userMessage = messageInput.value.trim();
-
-    if (!userMessage) {
-        messageInput.style.border = '1px solid red';
-        return;
-    }
-    messageInput.style.border = 'none';
-
-    bloquearInterface();
-
-    fetch("http://localhost:3000/proxy-chat", {
-        method: 'POST',
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userMessage })
-    })
-    .then(response => response.json())
-    .then(data => {
-        const resposta = data.choices[0].message.content;
-        showHistory(userMessage, resposta);
-    })
-    .catch(error => {
-        console.error(`Erro -> ${error}`);
-    })
-    .finally(() => {
-        desbloquearInterface();
-        messageInput.value = '';
-    });
-}
 
 function showHistory(userMessage, resposta) {
     const userMsg = document.createElement('div');

@@ -64,7 +64,7 @@ button:hover {
   border: 1px solid var(--accent);
   box-shadow: 0 0 20px var(--shadow-glow);
   width: 50%;
-  height: 75vh;
+  height: 68vh;
   border-radius: var(--border-radius);
   display: flex;
   flex-direction: column;
@@ -104,6 +104,7 @@ button:hover {
   justify-content: center;
   gap: 1rem;
   backdrop-filter: blur(8px);
+  width: 100%;
 }
 
 .microfone-icon {
@@ -126,7 +127,7 @@ button:hover {
 .my-message {
   background-color: rgba(255, 255, 255, 0.06);
   border: 1px solid #5555ff;
-  text-align: right;
+  text-align: left;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
 }
 
@@ -178,6 +179,7 @@ button:hover {
 .btn-container {
   display: flex;
   gap: 15px;
+  width: 100%;
 }
 
 .btn-submit {
@@ -189,8 +191,8 @@ button:hover {
   font-size: 12px;
   margin-left: 10px;
   align-self: center;
-  width: 28px;
-  height: 28px;
+  min-width: 28px;
+  min-height: 28px;
 }
 
 .icone-audio:hover {
@@ -337,7 +339,7 @@ button:hover {
 }
 
 #message-input {
-  width: 100%;
+  width: 300%;
 }
 
 @keyframes flutuar {
@@ -396,6 +398,7 @@ button:hover {
     height: 70vh;
     padding: 1rem 1rem;
     margin: 0 1rem;
+    width: 60%;
   }
 
   .imagem-destaque {
@@ -439,5 +442,9 @@ button:hover {
 
   .topo {
     margin-bottom: 10px;
+  }
+
+  #message-input {
+    width: 86%;
   }
 }
