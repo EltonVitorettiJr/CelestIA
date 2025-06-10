@@ -14,8 +14,6 @@ function sendMessage() {
     messageInput.style.border = 'none';
 
     bloquearInterface();
-    status.innerHTML = 'Carregando...';
-    status.style.display = 'block';
 
     fetch("http://localhost:3000/proxy-chat", {
         method: 'POST',
@@ -25,12 +23,10 @@ function sendMessage() {
     .then(response => response.json())
     .then(data => {
         const resposta = data.choices[0].message.content;
-        status.style.display = 'none';
         showHistory(userMessage, resposta);
     })
     .catch(error => {
         console.error(`Erro -> ${error}`);
-        status.innerHTML = 'Erro, tente novamente mais tarde...';
     })
     .finally(() => {
         desbloquearInterface();

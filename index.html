@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -23,14 +24,17 @@
 
       <div class="footer">
         <input type="text" id="message-input" placeholder="Escreva aqui..." autocomplete="off" />
-        <button id="btn-microfone" title="Falar">
-          <img src="image/microfone-icon.png" class="microfone-icon">
-        </button>
-        <button class="btn-submit" id="btn-submit" onclick="sendMessage()">Enviar</button>
+        <div class="btn-container">
+          <button id="btn-microfone" title="Falar">
+            <img src="image/microfone-icon.png" class="microfone-icon">
+          </button>
+          <button class="btn-submit" id="btn-submit" onclick="sendMessage()">Enviar</button>
+        </div>
       </div>
     </div>
   </div>
 
   <script src="script.js"></script>
 </body>
+
 </html>

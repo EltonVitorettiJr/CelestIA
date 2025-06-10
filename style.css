@@ -64,7 +64,7 @@ button:hover {
   border: 1px solid var(--accent);
   box-shadow: 0 0 20px var(--shadow-glow);
   width: 900px;
-  height: 580px;
+  height: 100%;
   border-radius: var(--border-radius);
   display: flex;
   flex-direction: column;
@@ -72,7 +72,15 @@ button:hover {
   text-align: center;
   backdrop-filter: blur(8px);
   padding: 1rem 2rem;
-  max-height: 800px;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  width: 100vw;
+  height: 95vh;
 }
 
 .header {
@@ -96,6 +104,10 @@ button:hover {
   justify-content: center;
   gap: 1rem;
   backdrop-filter: blur(8px);
+}
+
+.microfone-icon {
+  width: 50px;
 }
 
 .my-message,
@@ -163,11 +175,22 @@ button:hover {
   color: #000;
 }
 
+.btn-container {
+  display: flex;
+  gap: 15px;
+}
+
+.btn-submit {
+  width: 100px;
+}
+
 .icone-audio {
   border-radius: 50%;
   font-size: 12px;
   margin-left: 10px;
   align-self: center;
+  width: 28px;
+  height: 28px;
 }
 
 .icone-audio:hover {
@@ -313,6 +336,10 @@ button:hover {
   background: transparent;
 }
 
+#message-input {
+  width: 100%;
+}
+
 @keyframes flutuar {
   0%, 100% {
     transform: translateY(0);
@@ -334,10 +361,6 @@ button:hover {
     flex-wrap: wrap;
   }
 
-  input {
-    width: 92%;
-  }
-
   button {
     padding: 10px;
   }
@@ -348,8 +371,16 @@ button:hover {
     word-wrap: break-word;
   }
 
+  #message-input {
+    width: auto;
+  }
+
   .botao-velocidade {
     right: -30px;
+  }
+
+  .btn-submit {
+    width: 100%;
   }
 
   .message-content-container,
@@ -357,11 +388,16 @@ button:hover {
     flex-direction: column;
     align-items: flex-start;
   }
+
+  .microfone-icon {
+    width: 30px;
+  }
 }
 
 @media (max-width: 600px) {
   .imagem-destaque {
     max-width: 100px;
+    margin: 0%;
   }
 
   .header {
@@ -389,14 +425,7 @@ button:hover {
 
   .box-questions {
     width: 80%;
-    height: 600px;
-  }
-
-  .container {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
+    height: 75vh;
   }
 
   input {
@@ -405,7 +434,15 @@ button:hover {
 }
 
 @media (max-width: 400px) {
-  input {
-    width: 86%;
+  .box-questions {
+    height: 70vh;
+  }
+
+  .imagem-destaque {
+    margin: 0%;
+  }
+
+  .topo {
+    margin-bottom: 10px;
   }
 }

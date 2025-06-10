@@ -39,9 +39,9 @@ async function toggleFala(texto, botao) {
     utterance.rate = velocidades[indiceVel];
     utterance.pitch = 0.8;
 
-    const vozPreferida = vozes.find(v => 
-        v.name.includes("Google português") || 
-        v.name.includes("Luciana") || 
+    const vozPreferida = vozes.find(v =>
+        v.name.includes("Google português") ||
+        v.name.includes("Luciana") ||
         v.lang === 'pt-BR'
     );
     utterance.voice = vozPreferida || null;
