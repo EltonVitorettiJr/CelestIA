@@ -6,7 +6,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const apiKey = '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';
+const apiKey = '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';
 const weatherApiKey = 'e9a4eb2f2a6b0b54f6b249011c79344d';
 
 app.post("/proxy-chat", async (req, res) => {
