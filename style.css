@@ -343,9 +343,12 @@ button:hover {
 }
 
 @keyframes flutuar {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-8px);
   }
@@ -435,7 +438,7 @@ button:hover {
 }
 
 @media (max-width: 400px) {
-  
+
   .imagem-destaque {
     margin: 0%;
   }

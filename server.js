@@ -6,7 +6,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const apiKey = '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';
+const apiKey = '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';
 const weatherApiKey = 'e9a4eb2f2a6b0b54f6b249011c79344d';
 
 app.post("/proxy-chat", async (req, res) => {
@@ -15,9 +15,9 @@ app.post("/proxy-chat", async (req, res) => {
     if (!Array.isArray(messages) || messages.length === 0) {
         return res.status(400).json({ error: "Envie um array 'messages' não vazio" });
     }
-    
+
     try {
-        
+
         const response = await axios.post(
             "https://openrouter.ai/api/v1/chat/completions",
             {

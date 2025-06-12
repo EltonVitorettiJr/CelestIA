@@ -10,14 +10,14 @@ let conversationHistory = [
 
 function carregarVozes() {
     return new Promise((resolve) => {
-    const vozesDisponiveis = speechSynthesis.getVoices();
-    if (vozesDisponiveis.length > 0) {
-        resolve(vozesDisponiveis);
-    } else {
-        speechSynthesis.onvoiceschanged = () => {
-        resolve(speechSynthesis.getVoices());
-        };
-    }
+        const vozesDisponiveis = speechSynthesis.getVoices();
+        if (vozesDisponiveis.length > 0) {
+            resolve(vozesDisponiveis);
+        } else {
+            speechSynthesis.onvoiceschanged = () => {
+                resolve(speechSynthesis.getVoices());
+            };
+        }
     });
 }
 
@@ -25,48 +25,48 @@ async function toggleFala(texto, botao) {
     const estaFalando = botao.classList.contains('falando');
 
     if (estaFalando) {
-    speechSynthesis.cancel();
-    botao.classList.remove('falando');
-    botao.textContent = "🔊";
-    return;
+        speechSynthesis.cancel();
+        botao.classList.remove('falando');
+        botao.textContent = "🔊";
+        return;
     }
 
     if (!('speechSynthesis' in window)) {
-    alert("Recurso de voz não suportado neste navegador!");
-    return;
+        alert("Recurso de voz não suportado neste navegador!");
+        return;
     }
 
     try {
-    const vozes = await carregarVozes();
-    utterance = new SpeechSynthesisUtterance(texto);
-    utterance.lang = 'pt-BR';
+        const vozes = await carregarVozes();
+        utterance = new SpeechSynthesisUtterance(texto);
+        utterance.lang = 'pt-BR';
 
-    const mensagem = botao.closest('.box-response-message');
-    const indiceVel = parseInt(mensagem.dataset.velocidadeIndex) || 0;
-    utterance.rate = velocidades[indiceVel];
-    utterance.pitch = 0.8;
+        const mensagem = botao.closest('.box-response-message');
+        const indiceVel = parseInt(mensagem.dataset.velocidadeIndex) || 0;
+        utterance.rate = velocidades[indiceVel];
+        utterance.pitch = 0.8;
 
-    const vozPreferida = vozes.find(v =>
-        v.name.includes("Google português") ||
-        v.name.includes("Luciana") ||
-        v.lang === 'pt-BR'
-    );
-    utterance.voice = vozPreferida || null;
+        const vozPreferida = vozes.find(v =>
+            v.name.includes("Google português") ||
+            v.name.includes("Luciana") ||
+            v.lang === 'pt-BR'
+        );
+        utterance.voice = vozPreferida || null;
 
-    utterance.onstart = () => {
-        botao.classList.add('falando');
-        botao.textContent = '🔈';
-    };
+        utterance.onstart = () => {
+            botao.classList.add('falando');
+            botao.textContent = '🔈';
+        };
 
-    utterance.onend = utterance.onerror = () => {
-        botao.classList.remove('falando');
-        botao.textContent = '🔊';
-    };
+        utterance.onend = utterance.onerror = () => {
+            botao.classList.remove('falando');
+            botao.textContent = '🔊';
+        };
 
-    speechSynthesis.speak(utterance);
+        speechSynthesis.speak(utterance);
     } catch (error) {
-    console.error("Erro na síntese de voz:", error);
-    alert("Erro ao reproduzir áudio");
+        console.error("Erro na síntese de voz:", error);
+        alert("Erro ao reproduzir áudio");
     }
 }
 
@@ -80,10 +80,10 @@ function proximaVelocidade(botao, mensagemId) {
 
     const botaoAudio = mensagem.querySelector('.icone-audio');
     if (botaoAudio.classList.contains('falando')) {
-    speechSynthesis.cancel();
-    setTimeout(() => {
-        toggleFala(mensagem.querySelector('.texto-mensagem').textContent, botaoAudio);
-    }, 100);
+        speechSynthesis.cancel();
+        setTimeout(() => {
+            toggleFala(mensagem.querySelector('.texto-mensagem').textContent, botaoAudio);
+        }, 100);
     }
 }
 
@@ -134,31 +134,31 @@ function appendMessage(type, text) {
     bubble.appendChild(textoSpan);
 
     if (type === "bot") {
-    const contentContainer = document.createElement("div");
-    contentContainer.className = "message-content-container";
+        const contentContainer = document.createElement("div");
+        contentContainer.className = "message-content-container";
 
-    const botaoAudio = document.createElement("button");
-    botaoAudio.className = "icone-audio";
-    botaoAudio.textContent = "🔊";
-    botaoAudio.onclick = () => toggleFala(text, botaoAudio);
+        const botaoAudio = document.createElement("button");
+        botaoAudio.className = "icone-audio";
+        botaoAudio.textContent = "🔊";
+        botaoAudio.onclick = () => toggleFala(text, botaoAudio);
 
-    const textContainer = document.createElement("div");
-    textContainer.className = "texto-container";
-    textContainer.appendChild(textoSpan);
-    textContainer.appendChild(botaoAudio);
+        const textContainer = document.createElement("div");
+        textContainer.className = "texto-container";
+        textContainer.appendChild(textoSpan);
+        textContainer.appendChild(botaoAudio);
 
-    contentContainer.appendChild(textContainer);
+        contentContainer.appendChild(textContainer);
 
-    const botaoVelocidade = document.createElement("button");
-    botaoVelocidade.className = "botao-velocidade";
-    botaoVelocidade.textContent = "0.8x";
-    botaoVelocidade.onclick = (e) => {
-        e.stopPropagation();
-        proximaVelocidade(botaoVelocidade, messageId);
-    };
+        const botaoVelocidade = document.createElement("button");
+        botaoVelocidade.className = "botao-velocidade";
+        botaoVelocidade.textContent = "0.8x";
+        botaoVelocidade.onclick = (e) => {
+            e.stopPropagation();
+            proximaVelocidade(botaoVelocidade, messageId);
+        };
 
-    bubble.appendChild(contentContainer);
-    bubble.appendChild(botaoVelocidade);
+        bubble.appendChild(contentContainer);
+        bubble.appendChild(botaoVelocidade);
     }
 
     wrapper.appendChild(bubble);
@@ -188,7 +188,7 @@ recognition.onerror = (event) => {
 
 document.getElementById('message-input').addEventListener('keydown', function (event) {
     if (event.key === 'Enter') {
-    event.preventDefault();
-    sendMessage();
+        event.preventDefault();
+        sendMessage();
     }
 });
