@@ -7,7 +7,7 @@ app.use(cors());
 app.use(express.json());
 
 const apiKey = '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';
-const weatherApiKey = 'e9a4eb2f2a6b0b54f6b249011c79344d';
+const weatherApiKey = 'f5e60115af65f09b1ca941a7396fe0b9';
 
 app.post("/proxy-chat", async (req, res) => {
     const { messages } = req.body;
@@ -42,27 +42,34 @@ app.post("/proxy-chat", async (req, res) => {
 });
 
 app.get("/clima", async (req, res) => {
-    const cidade = req.query.cidade || "São Paulo";
+  const cidade = req.query.cidade || "São Paulo";
 
-    try {
-        const resposta = await axios.get(
-            `https://api.openweathermap.org/data/2.5/weather?q=${cidade}&appid=${weatherApiKey}&units=metric&lang=pt_br`
-        );
+  // Headers para evitar cache
+  res.set({
+    "Cache-Control": "no-cache, no-store, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "0"
+  });
 
-        const dados = resposta.data;
+  try {
+    const resposta = await axios.get(
+      `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(cidade)}&appid=${weatherApiKey}&units=metric&lang=pt_br`
+    );
 
-        res.json({
-            cidade: dados.name,
-            descricao: dados.weather[0].description,
-            temperatura: dados.main.temp,
-            sensacao: dados.main.feels_like,
-            umidade: dados.main.humidity,
-            vento: dados.wind.speed
-        });
-    } catch (error) {
-        console.error("Erro ao buscar clima:", error.response?.data || error.message);
-        res.status(500).json({ erro: "Erro ao buscar dados do clima" });
-    }
+    const d = resposta.data;
+    res.json({
+      cidade: d.name,
+      descricao: d.weather[0].description,
+      temperatura: d.main.temp,
+      sensacao: d.main.feels_like,
+      umidade: d.main.humidity,
+      vento: d.wind.speed
+    });
+
+  } catch (error) {
+    console.error("Erro ao buscar clima:", error.response?.data || error.message);
+    res.status(500).json({ erro: "Erro ao buscar dados do clima" });
+  }
 });
 
 app.listen(3000, () => {
